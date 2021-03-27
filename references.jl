@@ -35,7 +35,10 @@ function read_references_from_file(path::String)::Vector{Reference}
     references = [read_reference_from_string(data[i]) for i in 2:(1+R)]
     return references
 end
+<<<<<<< HEAD
 
 function work_needed(ref::Reference)
     return sum(ref.tasks)
 end
+=======
+>>>>>>> 0997bc421250f81a0052433ab641008505306884
