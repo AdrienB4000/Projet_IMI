@@ -40,18 +40,21 @@ function add_reference_to_file(ref::Reference, path::String)
     references = read_references_from_file(path)
     append!(references, [ref])
     write_references_to_file(references, path)
+    return true
 end
 
-function work_needed(ref::Reference)
+function work_needed(ref::Reference)::Int
     return sum(ref.tasks)
 end
 
-function work_allocation(ref::Reference, nb_workers::Int)
+function work_allocation(ref::Reference, nb_workers::Int)::Tuple{Vector{Int}, Vector{Int}}
     # This allocation tries to minimize the maximal time spent by a worker
     # Complexity in 2^nb_workers, to upgrade!
     work_time_per_worker = work_needed(ref)/nb_workers
     if nb_workers == 1
         return ([length(ref.tasks)], [sum(ref.tasks)])
+    elseif length(ref.tasks) == 0
+        return (zeros(Int, nb_workers), zeros(Int, nb_workers))
     else
         first_separator = 0
         correspondant_work = 0
@@ -72,4 +75,16 @@ function work_allocation(ref::Reference, nb_workers::Int)
             return separators2, times_2
         end
     end
+end
+
+function prod_allocations_by_ref_and_nb_workers(references::Vector{Reference})::Array{Array{Int, 1}, 2}
+    R = length(references)
+    max_nb_workers = 15
+    prod_allocations = Array{Array{Int, 1}, 2}(undef, R, max_nb_workers)
+    for ref in 1:R
+        for nb_workers in 1:max_nb_workers
+            prod_allocations[ref, nb_workers] = work_allocation(references[ref], nb_workers)[2]
+        end
+    end
+    return prod_allocations
 end
