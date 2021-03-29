@@ -34,7 +34,24 @@ function make_times_calculation(prod::Production, prod_allocations::Array{Array{
     return make_times
 end
 
-function check_time(prod::Production, prod_allocations::Array{Array{Int, 1}, 1}, nb_workers::Int)::Bool
-    make_times = make_times_calculation(prod, prod_allocations, nb_workers)
-    return make_times[length(prod.planning), nb_workers]/60 < prod.time_to_produce
+function end_time(make_times::Array{Int, 2})::Int
+    return make_times[end, end]
+end
+
+function check_time(prod::Production, make_times::Array{Int, 2})::Bool
+    return end_time(make_times)/60 < prod.time_to_produce
+end
+
+function pourcentage_temps_travaille(prod::Production, references::Vector{Reference}, make_times::Array{Int, 2})::Float64
+    works_needed_by_ref = [work_needed(ref) for ref in references]
+    effective_work = sum([works_needed_by_ref[i] for i in prod.planning])
+    time_to_produce = end_time(make_times)
+    nb_workers = size(mt)[2]
+    return effective_work/(time_to_produce*nb_workers)*100
+end
+
+function production_equivalente_triee(prod::Production, references::Vector{Reference}, rev=false)::Production
+    new_planning = deepcopy(prod.planning)
+    sort!(new_planning, by = i -> work_needed(references[i]), rev=rev)
+    return Production(new_planning, prod.time_to_produce)
 end
