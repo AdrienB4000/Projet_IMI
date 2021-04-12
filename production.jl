@@ -46,7 +46,7 @@ function pourcentage_temps_travaille(prod::Production, references::Vector{Refere
     works_needed_by_ref = [work_needed(ref) for ref in references]
     effective_work = sum([works_needed_by_ref[i] for i in prod.planning])
     time_to_produce = end_time(make_times)
-    nb_workers = size(mt)[2]
+    nb_workers = size(make_times)[2]
     return effective_work/(time_to_produce*nb_workers)*100
 end
 
