@@ -1,3 +1,5 @@
+
+
 include("references.jl")
 include("production.jl")
 
@@ -23,3 +25,5 @@ function main()
     println(end_time(mt3))
     println(pourcentage_temps_travaille(prod_triee_rev, references, mt3))
 end
+
+main()

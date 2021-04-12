@@ -24,7 +24,7 @@ function make_times_calculation(prod::Production, prod_allocations::Array{Array{
     make_times[1, :] = cumsum(prod_allocations[prod.planning[1]])
     for p in 2:length(prod.planning)
         make_times[p, 1] = max(make_times[p-1, 2],
-                               make_times[p-1, 1] + prod_allocations[prod.planning[p]][1])
+                               make_times[p-1, 1] +   prod_allocations[prod.planning[p]][1])
         for n in 2:nb_workers-1
             make_times[p, n] = max(make_times[p-1, n+1],
                                    max(make_times[p, n-1], make_times[p-1, n]) + prod_allocations[prod.planning[p]][n])
@@ -46,7 +46,7 @@ function pourcentage_temps_travaille(prod::Production, references::Vector{Refere
     works_needed_by_ref = [work_needed(ref) for ref in references]
     effective_work = sum([works_needed_by_ref[i] for i in prod.planning])
     time_to_produce = end_time(make_times)
-    nb_workers = size(mt)[2]
+    nb_workers = size(make_times)[2]
     return effective_work/(time_to_produce*nb_workers)*100
 end
 
