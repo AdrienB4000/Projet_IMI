@@ -88,3 +88,26 @@ function prod_allocations_by_ref_and_nb_workers(references::Vector{Reference})::
     end
     return prod_allocations
 end
+
+function prod_allocations_cycle_time(references::Vector{Reference}, tc_target::Array{Int64,1})
+    R = length(references)
+    max_nb_workers = 15
+    prod_allocations = prod_allocations_by_ref_and_nb_workers(references)
+    prod_allocations_ttc = Array{Array{Int64, 1}, 1}(undef, R)
+    ref_nb_workers = Array{Int64, 1}(undef, R)
+
+    for ref in 1:R
+        nb_workers = 1
+        target_reached = 0
+        while target_reached == 0 && nb_workers <= max_nb_workers
+            if maximum(prod_allocations[ref,nb_workers]) <= tc_target[ref]
+                prod_allocations_ttc[ref] = prod_allocations[ref,nb_workers]
+                ref_nb_workers[ref] = nb_workers
+                target_reached = 1
+            else
+                nb_workers += 1
+            end
+        end
+    end
+    return prod_allocations_ttc, ref_nb_workers
+end
