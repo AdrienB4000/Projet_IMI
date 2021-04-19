@@ -4,12 +4,13 @@ include("references.jl")
 include("production.jl")
 
 
-#git 
+#git
 
 function main()
+    max_nb_workers = 15
     references = read_references_from_file("./references.txt")
     R = length(references)
-    alloc = prod_allocations_by_ref_and_nb_workers(references)
+    alloc = prod_allocations_by_ref_and_nb_workers(references, max_nb_workers)
     nb_ref_to_produce = 200
     prods = Production(rand(1:R, nb_ref_to_produce))
     nb_workers = 12

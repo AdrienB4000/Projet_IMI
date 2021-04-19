@@ -77,7 +77,7 @@ function work_allocation(ref::Reference, nb_workers::Int)::Tuple{Vector{Int}, Ve
     end
 end
 
-function prod_allocations_by_ref_and_nb_workers(references::Vector{Reference})::Array{Array{Int, 1}, 2}
+function prod_allocations_by_ref_and_nb_workers(references::Vector{Reference}, max_nb_workers::Int64)::Array{Array{Int, 1}, 2}
     R = length(references)
     max_nb_workers = 15
     prod_allocations = Array{Array{Int, 1}, 2}(undef, R, max_nb_workers)
@@ -89,9 +89,8 @@ function prod_allocations_by_ref_and_nb_workers(references::Vector{Reference})::
     return prod_allocations
 end
 
-function prod_allocations_cycle_time(references::Vector{Reference}, tc_target::Array{Int64,1})
+function prod_allocations_cycle_time(references::Vector{Reference}, tc_target::Array{Int64,1}, max_nb_workers::Int64)
     R = length(references)
-    max_nb_workers = 15
     prod_allocations = prod_allocations_by_ref_and_nb_workers(references)
     prod_allocations_ttc = Array{Array{Int64, 1}, 1}(undef, R)
     ref_nb_workers = Array{Int64, 1}(undef, R)
@@ -109,5 +108,5 @@ function prod_allocations_cycle_time(references::Vector{Reference}, tc_target::A
             end
         end
     end
-    return prod_allocations_ttc, ref_nb_workers
+    return prod_allocations_ttc
 end
