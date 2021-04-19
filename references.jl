@@ -91,7 +91,7 @@ end
 
 function prod_allocations_cycle_time(references::Vector{Reference}, tc_target::Array{Int64,1}, max_nb_workers::Int64)
     R = length(references)
-    prod_allocations = prod_allocations_by_ref_and_nb_workers(references, max_nb_workers)
+    prod_allocations = prod_allocations_by_ref_and_nb_workers(references)
     prod_allocations_ttc = Array{Array{Int64, 1}, 1}(undef, R)
     ref_nb_workers = Array{Int64, 1}(undef, R)
 
@@ -109,4 +109,18 @@ function prod_allocations_cycle_time(references::Vector{Reference}, tc_target::A
         end
     end
     return prod_allocations_ttc
+end
+
+
+function write_random_references_to_file(path::String, nb_refs::Int, ref_min_time::Int, ref_max_time::Int,
+                                         nb_tasks_min::Int, nb_tasks_max::Int)
+    references = Reference[]
+    for k in 1:nb_refs
+        ref_time = rand(ref_min_time:ref_max_time)
+        nb_tasks = rand(nb_tasks_min:nb_tasks_max)
+        tasks = rand(1:0.05:1.5, nb_tasks)
+        tasks = round.(Int, tasks/sum(tasks)*ref_time)
+        append!(references, [Reference(k, tasks)])
+    end
+    write_references_to_file(references, path)
 end
