@@ -3,10 +3,10 @@ using StatsBase
 
 struct Production
     planning::Vector{Int}
-    time_to_produce::Int
+    period::Int
 
     Production(planning, time_to_produce)=new(planning, time_to_produce)
-    Production(planning)=new(planning, 60)
+    Production(planning)=new(planning, 1)
 end
 
 function check_needs(needs::Vector{Int}, prod::Production)::Bool
@@ -39,7 +39,7 @@ function end_time(make_times::Array{Int, 2})::Int
 end
 
 function check_time(prod::Production, make_times::Array{Int, 2})::Bool
-    return end_time(make_times)/60 < prod.time_to_produce
+    return end_time(make_times)/3600 < prod.period
 end
 
 function pourcentage_temps_travaille(prod::Production, references::Vector{Reference}, make_times::Array{Int, 2})::Float64
@@ -53,5 +53,5 @@ end
 function production_equivalente_triee(prod::Production, references::Vector{Reference}, rev=false)::Production
     new_planning = deepcopy(prod.planning)
     sort!(new_planning, by = i -> work_needed(references[i]), rev=rev)
-    return Production(new_planning, prod.time_to_produce)
+    return Production(new_planning, prod.period)
 end
