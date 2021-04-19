@@ -91,7 +91,7 @@ end
 
 function prod_allocations_cycle_time(references::Vector{Reference}, tc_target::Array{Int64,1}, max_nb_workers::Int64)
     R = length(references)
-    prod_allocations = prod_allocations_by_ref_and_nb_workers(references)
+    prod_allocations = prod_allocations_by_ref_and_nb_workers(references, max_nb_workers)
     prod_allocations_ttc = Array{Array{Int64, 1}, 1}(undef, R)
     ref_nb_workers = Array{Int64, 1}(undef, R)
 

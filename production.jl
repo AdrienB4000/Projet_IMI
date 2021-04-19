@@ -1,4 +1,6 @@
 include("references.jl")
+include("const.jl")
+
 using StatsBase
 
 struct Production
@@ -54,4 +56,9 @@ function production_equivalente_triee(prod::Production, references::Vector{Refer
     new_planning = deepcopy(prod.planning)
     sort!(new_planning, by = i -> work_needed(references[i]), rev=rev)
     return Production(new_planning, prod.period)
+end
+
+function nb_employe_USINE(prod::Production, references::Vector{Reference},tc_target::Array{Int64,1},max_nb_workers::Int64)
+    prod_allocations_ttc = prod_allocations_cycle_time(references,tc_target,max_nb_workers)
+    return maximum([length(p) for p in prod_allocations_ttc])
 end

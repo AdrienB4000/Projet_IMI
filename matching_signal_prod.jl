@@ -1,17 +1,12 @@
 include("production.jl")
 include("signal.jl")
+include("references.jl")
 
 #Getting list of existing references times
-try
-    existing_references = references
-catch
-    existing_references = read_references_from_file("./references.txt")
-finally
-    existing_references_times = (x -> sum(x.tasks) ).(existing_references)
-end
+
 
 function naive_strategy(signal::Signal)::Production
-    return Production(signal.planning, 60)
+    return Production(signal.planning, 1)
 end
 
 function sorting_strategy1(signal::Signal)::Production
@@ -22,4 +17,11 @@ end
 function sorting_strategy2(signal::Signal)::Production
     y = signal.planning
     return Production( sort(y, by= i -> existing_references_times[y[i]]) , 60)
+end
+
+function actu_prod_USINE(prod::Vector{Production},new_signal::Signal, T=12)
+    P = deepcopy(prod)
+    new_prod = naive_strategy(new_signal)
+    push!(P,new_prod)
+    return P
 end

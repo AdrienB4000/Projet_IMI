@@ -2,11 +2,13 @@
 
 include("references.jl")
 include("production.jl")
-
+include("signal.jl")
+include("matching_signal_prod.jl")
+include("simulation.jl")
 
 #git
 
-function main()
+function main1()
     max_nb_workers = 15
     references = read_references_from_file("./references.txt")
     R = length(references)
@@ -28,6 +30,15 @@ function main()
     println(prod_triee_rev)
     println(end_time(mt3))
     println(pourcentage_temps_travaille(prod_triee_rev, references, mt3))
+end
+
+function main()
+    max_nb_workers = 15
+    references = read_references_from_file("./references.txt")
+    R = length(references)
+    prod_init = [Production([0],1) for i in 0:10]
+    println(length(prod_init))
+    simulation(prod_init, actu_prod_USINE, nb_employe_USINE, 6)
 end
 
 main()
