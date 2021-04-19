@@ -33,9 +33,7 @@ function main1()
 end
 
 function main()
-    max_nb_workers = 15
-    references = read_references_from_file("./references.txt")
-    R = length(references)
+    # max_nb_workers = max_workers
     prod_init = [Production([0],1) for i in 0:10]
     println(length(prod_init))
     simulation(prod_init, actu_prod_USINE, nb_employe_USINE, 6)

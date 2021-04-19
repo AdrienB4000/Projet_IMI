@@ -28,7 +28,7 @@ function simulation( P::Vector{Production}, actu_prod, nb_employe, vision, ref::
             nb = nb_employe(prod[end-i],ref,tc_target,max_nb_workers)
             push!(employe,nb)
         end
-        print("instant t ", t, " planning employés ", employe)
+        println("instant t ", t, " planning employés ", employe)
     end
 end
 
