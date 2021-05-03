@@ -22,6 +22,8 @@ end
 function actu_prod_USINE(prod::Vector{Production},new_signal::Signal, T=12)
     P = deepcopy(prod)
     new_prod = naive_strategy(new_signal)
-    push!(P,new_prod)
+    append!(P,[new_prod])
     return P
 end
+
+#print(actu_prod_USINE([Production([1]) for i in 1:12], Signal(1)))
