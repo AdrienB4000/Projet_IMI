@@ -20,7 +20,7 @@ function simulation( P::Vector{Production}, actu_prod, nb_employe, vision, ref::
     tps = 1
     tab_ttc = prod_allocations_cycle_time(ref,tc_target,max_workers)
     stock = Stocks(zeros(R),0)
-    signals = Array{Signal([7],1),12}
+    signals = [Signal([7],1) for i in 1:12]
     #for p in prod
     #    print(nb_employe(p))
     #end
@@ -33,6 +33,7 @@ function simulation( P::Vector{Production}, actu_prod, nb_employe, vision, ref::
         deleteat!(signals,1)
 
         new_signal = Signal(1)
+        push!(signals,new_signal)
         prod = actu_prod(prod::Vector{Production},new_signal)
         employe = []
         for i in 0:vision
@@ -40,7 +41,7 @@ function simulation( P::Vector{Production}, actu_prod, nb_employe, vision, ref::
             push!(employe,nb)
         end
         println("instant t ", t, " planning employés ", employe)
-        #println("taille ", length(prod), " prod ", prod)
+        println("taille ", length(signals))
     end
 end
 
