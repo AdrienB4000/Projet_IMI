@@ -7,7 +7,7 @@ const:
 
 include("references.jl")
 
-const nb_ref_unite_tps = 10 #nbr de ref demandée par unite de temps (heure)
+const nb_ref_unite_tps = 20 #nbr de ref demandée par unite de temps (heure)
 const tps_simul = 10 #unité de temps (heure)
 const max_workers = 15
 const references = read_references_from_file("./references/references4.txt")
