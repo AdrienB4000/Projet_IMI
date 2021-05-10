@@ -9,7 +9,7 @@ include("references.jl")
 include("production.jl")
 include("signal.jl")
 include("matching_signal_prod.jl")
-#include("const.jl")
+include("stocks.jl")
 
 
 
@@ -18,17 +18,28 @@ function simulation(P::Vector{Production}, actu_prod, nb_employe, vision, ref::V
     prod = deepcopy(P)
     signals =[]
     tps = 1
+    tab_ttc = prod_allocations_cycle_time(ref,tc_target,max_workers)
+    stock = Stocks(zeros(R),0)
+    signals = Array{Signal([7],1),12}
     #for p in prod
     #    print(nb_employe(p))
     #end
     for t in 1:tps_simul
-        new_signal = Signal([rand(1:R)], T)
-        actu_prod(prod::Vector{Production},new_signal)
+        println("t ", t , " stock ", stock.stocks)
+        last_prod = prod[end]
+        last_signal = signals[end]
+        stock = Compute_Stocks_at_T_plus_1(last_signal, last_prod, stock, R)
+        deleteat!(prod,1)
+        deleteat!(signals,1)
+
+        new_signal = Signal(1)
+        prod = actu_prod(prod::Vector{Production},new_signal)
         employe = []
         for i in 0:vision
-            nb = nb_employe(prod[end-i],ref,tc_target,max_nb_workers)
+            nb = nb_employe(prod[end-i],tab_ttc)
             push!(employe,nb)
         end
         println("instant t ", t, " planning employés ", employe)
+        #println("taille ", length(prod), " prod ", prod)
     end
 end

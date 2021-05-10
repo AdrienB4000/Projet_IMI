@@ -12,4 +12,5 @@ struct Signal
 
     Signal(planning, T)=new(planning, T)
     Signal(T)=new(rand(1:R, nb_ref_unite_tps), T) #references a produire en une unité de temps dans T unité de temps
+    #Signal(T,i) = new(i* ones(Int,nb_ref_unite_tps), T)
 end

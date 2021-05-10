@@ -58,7 +58,10 @@ function production_equivalente_triee(prod::Production, references::Vector{Refer
     return Production(new_planning, prod.period)
 end
 
-function nb_employe_USINE(prod::Production, references::Vector{Reference},tc_target::Array{Int64,1},max_nb_workers::Int64)
-    prod_allocations_ttc = prod_allocations_cycle_time(references,tc_target,max_nb_workers)
-    return maximum([length(p) for p in prod_allocations_ttc])
+function nb_employe_USINE(prod::Production, prod_alloc_ttc = nothing )
+    if prod_alloc_ttc == nothing
+          prod_alloc_ttc = prod_allocations_cycle_time(references,tc_target,max_nb_workers)
+    end
+    #println("prod alloc ", prod_allocations_ttc)
+    return maximum([length(prod_alloc_ttc[p]) for p in prod.planning])
 end
