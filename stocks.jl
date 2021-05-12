@@ -12,10 +12,18 @@ end
 
 function Compute_Stocks_at_T_plus_1(signal::Signal, production::Production, stocks_T::Stocks, nbr_references::Int)
     new_stocks = stocks_T.stocks
-    cum_prods = countmap(production.planning)
-    cum_demand = countmap(signal.planning)
-    println(cum_prods, " prod reelle ", production.planning)
-    println(cum_demand, " signal reel ", signal.planning)
+    if length(production.planning) == 0
+        cum_prods = Dict{Int64, Int64}()
+    else
+        cum_prods = countmap(production.planning)
+    end
+    if length(signal.planning) == 0
+        cum_demand = Dict{Int64, Int64}()
+    else
+        cum_demand = countmap(signal.planning)
+    end
+    #println(cum_prods, " prod reelle ", production.planning)
+    #println(cum_demand, " signal reel ", signal.planning)
 
 
     for i in 1:nbr_references
@@ -26,11 +34,11 @@ function Compute_Stocks_at_T_plus_1(signal::Signal, production::Production, stoc
             new_stocks[i] -= cum_demand[i]
         end
         if new_stocks[i] < 0
-            println("Error: negative stocks for reference ", i, " !")
+            #println("Error: negative stocks for reference ", i, " !")
         end
     end
     s = Stocks(new_stocks,stocks_T.date+1)
-    println("stock ", s.date, " : ", s.stocks)
+    #println("stock ", s.date, " : ", s.stocks)
     return s
 end
 
