@@ -36,7 +36,7 @@ function read_references_from_file(path::String)::Vector{Reference}
     return references
 end
 
-function add_reference_to_file(ref::Reference, path::String)
+function add_reference_to_file(ref::Reference, path::String)::Bool
     references = read_references_from_file(path)
     append!(references, [ref])
     write_references_to_file(references, path)

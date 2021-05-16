@@ -34,7 +34,7 @@ end
 
 function main()
     # max_nb_workers = max_workers
-    prod_init = [Production([7 for i in 1:nb_ref_unite_tps],1) for i in 1:12]
+    prod_init = [Production(rand(1:R, nb_ref_unite_tps),1) for i in 1:12]
     println(length(prod_init))
     simulation(prod_init, actu_prod_sort, nb_employe_USINE, 6)
 end

@@ -27,9 +27,17 @@ function actu_prod_USINE(prod::Vector{Production},new_signal::Signal, stocks_ini
     return P
 end
 
+function sorting_strategy_occurences(prod_cumulee_a_trier)
+    sort!(prod_cumulee_a_trier, by = i -> (-count(x->x==i, prod_cumulee_a_trier), i))
+end
+
+function sorting_strategy_duration(prod_cumulee_a_trier)
+    sort!(prod_cumulee_a_trier, by = i-> work_needed(references[i]))
+end
 #print(actu_prod_USINE([Production([1]) for i in 1:12], Signal(1)))
 
-function actu_prod_sort(prod::Vector{Production},signals::Vector{Signal}, stocks_init::Stocks, vision::Int)
+function actu_prod_sort(prod::Vector{Production},signals::Vector{Signal},
+    stocks_init::Stocks, vision::Int, sorting_strategy = sorting_strategy_occurences)
     new_prod_bloquee = prod[1:vision-1]
     prod_cumulee_a_trier = Int[]
     for k in vision:length(prod)
@@ -50,7 +58,7 @@ function actu_prod_sort(prod::Vector{Production},signals::Vector{Signal}, stocks
     for k in next_prod
         deleteat!(prod_cumulee_a_trier, findfirst(x -> x==k, prod_cumulee_a_trier))
     end
-    sort!(prod_cumulee_a_trier, by= i -> count(x->x==i, prod_cumulee_a_trier))
+    sorting_strategy(prod_cumulee_a_trier)
     append!(next_prod, prod_cumulee_a_trier)
     next_prods = [next_prod[(i-1)*nb_ref_unite_tps+1:i*nb_ref_unite_tps]
                   for i in 1:div(length(next_prod), nb_ref_unite_tps)]

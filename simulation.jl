@@ -19,7 +19,7 @@ function simulation(P::Vector{Production}, actu_prod, nb_employe, vision, ref::V
     tps = 1
     tab_ttc = prod_allocations_cycle_time(ref,tc_target,max_workers)
     stock = Stocks(zeros(R), 0)
-    signals = [Signal([7 for i in 1:nb_ref_unite_tps],1) for i in 1:T]
+    signals = [Signal(P[i].planning, 1) for i in 1:T]
     #for p in prod
     #    print(nb_employe(p))
     #end
@@ -35,7 +35,7 @@ function simulation(P::Vector{Production}, actu_prod, nb_employe, vision, ref::V
 
         new_signal = Signal(rand(1:R, nb_ref_unite_tps), 1)
         push!(signals,new_signal)
-        prod = actu_prod(prod::Vector{Production}, signals, stock, vision)
+        prod = actu_prod(prod::Vector{Production}, signals, stock, vision, sorting_strategy_duration)
         employe = []
         for i in 1:vision
             nb = nb_employe(prod[i],tab_ttc)
