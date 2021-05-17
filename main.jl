@@ -5,6 +5,7 @@ include("production.jl")
 include("signal.jl")
 include("matching_signal_prod.jl")
 include("simulation.jl")
+include("simulation_plots.jl")
 
 #git
 
@@ -36,5 +37,6 @@ function main()
     # max_nb_workers = max_workers
     prod_init = [Production(rand(1:R, nb_ref_unite_tps),1) for i in 1:12]
     println(length(prod_init))
-    simulation(prod_init, actu_prod_sort, nb_employe_USINE, 6)
+    stocks_simul, production_simul, signaux_simul, staffing = simulation(prod_init, actu_prod_sort, nb_employe_USINE, 6)
+    return stocks_simul
 end
