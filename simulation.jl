@@ -13,12 +13,12 @@ include("stocks.jl")
 
 
 
-function simulation(P::Vector{Production}, actu_prod, nb_employe, vision, ref::Vector{Reference} = references,tc_target::Array{Int64,1}=targets,max_nb_workers::Int64 =max_workers, T=12, tps_simul=72)
+function simulation(P::Vector{Production}, actu_prod, nb_employe, vision, ref::Vector{Reference} = references,tc_target::Array{Int64,1}=targets,max_nb_workers::Int64 =max_workers, T=12, tps_simul=tps_simul)
     prod = deepcopy(P)
     signals =[]
     tps = 1
     tab_ttc = prod_allocations_cycle_time(ref,tc_target,max_workers)
-    stock = Stocks(250*ones(R), 0)
+    stock = Stocks(5*ones(R), 0)
     signals = [Signal(P[i].planning, 1) for i in 1:T]
     #for p in prod
     #    print(nb_employe(p))
