@@ -51,7 +51,7 @@ function sorting_strategy_duration(prod_cumulee_a_trier, next_prod)
         min_work_needed = work_needed_by_ref[1]
         max_work_needed = work_needed_by_ref[end]
         beginning_work_needed = rand(min_work_needed:max_work_needed)
-        sort!(prod_cumulee_a_trier, by = i -> (abs(beginning_work_needed-max_work_needed(references[i])), i))
+        sort!(prod_cumulee_a_trier, by = i -> (abs(beginning_work_needed-work_needed(references[i])), i))
         append!(next_prod, prod_cumulee_a_trier)
     end
 end
