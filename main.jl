@@ -38,5 +38,5 @@ function main()
     prod_init = [Production(rand(1:R, nb_ref_unite_tps),1) for i in 1:12]
     println(length(prod_init))
     stocks_simul, production_simul, signaux_simul, staffing = simulation(prod_init, actu_prod_sort, nb_employe_USINE, 6)
-    return stocks_simul
+    return stocks_simul, staffing
 end
